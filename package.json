@@ -1,0 +1,16 @@
+{
+  "name": "lit-illumination-technology",
+  "version": "0.0.1",
+  "description": "NodeJS module to access the lit daemon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nick Pesce",
+  "email": "nickpesce22@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "net": "^1.0.2"
+  },
+  "repository": "https://github.com/nickpesce/lit_node"
+}
