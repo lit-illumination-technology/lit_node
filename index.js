@@ -4,7 +4,7 @@ function start(effect, args, callback) {
     let socket = null;
     try {
         socket = net.connect('/tmp/litd');
-        let command = {'type': 'command', 'effect': effect};
+        let command = {'type': 'command', 'effect': effect, 'args': args};
         socket.write(JSON.stringify(command));
     } catch(e){
         socket.end(e);
