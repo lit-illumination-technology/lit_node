@@ -1,10 +1,24 @@
 var net = require('net');
 
-function start(effect, args, callback) {
+function start_effect(effect, args, callback) {
     let socket = null;
     try {
         socket = net.connect('/tmp/litd');
         let command = {'type': 'command', 'effect': effect, 'args': args};
+        socket.write(JSON.stringify(command));
+    } catch(e){
+        socket.end(e);
+        return callback(undefined, conn_error(e));
+    }
+
+    socket.on('data', process_response(socket, callback));
+}
+
+function start_preset(preset, callback) {
+    let socket = null;
+    try {
+        socket = net.connect('/tmp/litd');
+        let command = {'type': 'command', 'preset': preset};
         socket.write(JSON.stringify(command));
     } catch(e){
         socket.end(e);
@@ -90,4 +104,4 @@ function get_zones(callback){
     query('zones', res => callback(res['zones']));
 }
 
-module.exports = { start, get_effects, get_colors, get_speeds, get_sections, get_zones };
+module.exports = { start_effect, start_preset, get_effects, get_colors, get_speeds, get_sections, get_zones };
