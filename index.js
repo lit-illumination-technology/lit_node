@@ -1,10 +1,10 @@
 var net = require('net');
 
-function start_effect(effect, args, callback) {
+function start_effect(effect, args, properties, callback) {
     let socket = null;
     try {
         socket = net.connect('/tmp/litd');
-        let command = {'type': 'command', 'effect': effect, 'args': args};
+        let command = {'start': {'effect': {'name': effect, 'args': args, 'properites': properties}}};
         socket.write(JSON.stringify(command));
     } catch(e){
         socket.end(e);
@@ -14,11 +14,11 @@ function start_effect(effect, args, callback) {
     socket.on('data', process_response(socket, callback));
 }
 
-function start_preset(preset, callback) {
+function start_preset(preset, properties, callback) {
     let socket = null;
     try {
         socket = net.connect('/tmp/litd');
-        let command = {'type': 'command', 'preset': preset};
+        let command = {'start': {'preset': {'name': preset, 'properties': properties}}};
         socket.write(JSON.stringify(command));
     } catch(e){
         socket.end(e);
@@ -32,7 +32,7 @@ function query(query, callback){
     let socket = null;
     try{
         socket = net.connect('/tmp/litd');
-        msg = {'type': 'query', 'query': query};
+        msg = {'query': {'what': query}};
         socket.write(JSON.stringify(msg));
     }catch (e) {
         socket.end(e);
@@ -45,7 +45,7 @@ function query(query, callback){
 function dev_command(command, args, callback){
     let  socket = null;
     try{
-        command = {'type': 'dev', 'command': command, 'args': args};
+        command = {'dev': {'command': command, 'args': args}};
         socket = net.connect('/tmp/litd');
         socket.wite(JSON.stringify(command));
     } catch (e) {
